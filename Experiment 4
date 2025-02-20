@@ -1,0 +1,237 @@
+Write a Java program to implement an ArrayList that stores employee details (ID, Name, and Salary). Allow users to add, update, remove, and search employees.  
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Employee {
+    private int id;
+    private String name;
+    private double salary;
+
+    public Employee(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Salary: " + salary;
+    }
+}
+
+public class EmployeeManager {
+    private ArrayList<Employee> employees = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
+
+    public void addEmployee() {
+        System.out.print("Enter Employee ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine(); 
+        System.out.print("Enter Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter Salary: ");
+        double salary = scanner.nextDouble();
+        employees.add(new Employee(id, name, salary));
+        System.out.println("Employee added successfully.");
+    }
+
+    public void updateEmployee() {
+        System.out.print("Enter Employee ID to update: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        Employee emp = findEmployeeById(id);
+        if (emp != null) {
+            System.out.print("Enter new Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Enter new Salary: ");
+            double salary = scanner.nextDouble();
+            emp.setName(name);
+            emp.setSalary(salary);
+            System.out.println("Employee details updated.");
+        } else {
+            System.out.println("Employee not found.");
+        }
+    }
+
+    public void removeEmployee() {
+        System.out.print("Enter Employee ID to remove: ");
+        int id = scanner.nextInt();
+        Employee emp = findEmployeeById(id);
+        if (emp != null) {
+            employees.remove(emp);
+            System.out.println("Employee removed successfully.");
+        } else {
+            System.out.println("Employee not found.");
+        }
+    }
+
+    public void searchEmployee() {
+        System.out.print("Enter Employee ID to search: ");
+        int id = scanner.nextInt();
+        Employee emp = findEmployeeById(id);
+        if (emp != null) {
+            System.out.println("Employee Details: " + emp);
+        } else {
+            System.out.println("Employee not found.");
+        }
+    }
+
+    private Employee findEmployeeById(int id) {
+        for (Employee emp : employees) {
+            if (emp.getId() == id) {
+                return emp;
+            }
+        }
+        return null;
+    }
+
+    public void displayEmployees() {
+        if (employees.isEmpty()) {
+            System.out.println("No employees found.");
+        } else {
+            System.out.println("Employee List:");
+            for (Employee emp : employees) {
+                System.out.println(emp);
+            }
+        }
+    }
+
+    public void menu() {
+        while (true) {
+            System.out.println("\n1. Add Employee\n2. Update Employee\n3. Remove Employee\n4. Search Employee\n5. Display Employees\n6. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1 -> addEmployee();
+                case 2 -> updateEmployee();
+                case 3 -> removeEmployee();
+                case 4 -> searchEmployee();
+                case 5 -> displayEmployees();
+                case 6 -> {
+                    System.out.println("Exiting program.");
+                    return;
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        EmployeeManager manager = new EmployeeManager();
+        manager.menu();
+    }
+}
+
+Create a program to collect and store all the cards to assist the users in finding all the cards in a given symbol using Collection interface.
+import java.util.*;
+
+class Card {
+    private String symbol;
+    private String name;
+
+    public Card(String symbol, String name) {
+        this.symbol = symbol;
+        this.name = name;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Card{Name='" + name + "', Symbol='" + symbol + "'}";
+    }
+}
+
+public class CardCollector {
+    private Collection<Card> cardCollection = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
+
+    public void addCard() {
+        System.out.print("Enter Card Symbol: ");
+        String symbol = scanner.nextLine();
+        System.out.print("Enter Card Name: ");
+        String name = scanner.nextLine();
+        cardCollection.add(new Card(symbol, name));
+        System.out.println("Card added successfully!");
+    }
+
+    public void findCardsBySymbol() {
+        System.out.print("Enter Symbol to search for: ");
+        String symbol = scanner.nextLine();
+        boolean found = false;
+
+        System.out.println("Cards with symbol '" + symbol + "':");
+        for (Card card : cardCollection) {
+            if (card.getSymbol().equalsIgnoreCase(symbol)) {
+                System.out.println(card);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No cards found with symbol: " + symbol);
+        }
+    }
+
+    public void displayAllCards() {
+        if (cardCollection.isEmpty()) {
+            System.out.println("No cards in the collection.");
+        } else {
+            System.out.println("All Cards:");
+            for (Card card : cardCollection) {
+                System.out.println(card);
+            }
+        }
+    }
+
+    public void menu() {
+        while (true) {
+            System.out.println("\n1. Add Card\n2. Find Cards by Symbol\n3. Display All Cards\n4. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); 
+
+            switch (choice) {
+                case 1 -> addCard();
+                case 2 -> findCardsBySymbol();
+                case 3 -> displayAllCards();
+                case 4 -> {
+                    System.out.println("Exiting program.");
+                    return;
+                }
+                default -> System.out.println("Invalid choice. Try again.");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        CardCollector collector = new CardCollector();
+        collector.menu();
+    }
+}
